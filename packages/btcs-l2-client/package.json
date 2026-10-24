@@ -1,0 +1,25 @@
+{
+  "name": "@silver-labs/btcs-l2-client",
+  "version": "0.1.0",
+  "description": "Read-only JSON-RPC client for verified BTCS L2 network profiles",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:integration": "node --test test/integration.test.js",
+    "check:types": "tsc --noEmit --project tsconfig.types.json"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "typescript": "7.0.2"
+  }
+}

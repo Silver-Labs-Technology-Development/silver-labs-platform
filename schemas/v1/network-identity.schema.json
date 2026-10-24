@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silver-labs.invalid/schemas/v1/network-identity.schema.json",
+  "title": "Silver Labs network identity",
+  "description": "Observed local BTCS L2 development identity; not proof of consensus or finality.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "profileType", "profileId", "chainId", "clientVersion"],
+  "properties": {
+    "schemaVersion": {
+      "const": 1,
+      "type": "integer"
+    },
+    "profileType": {
+      "const": "local-development",
+      "type": "string"
+    },
+    "profileId": {
+      "const": "btcs-l2-local",
+      "type": "string"
+    },
+    "chainId": {
+      "const": "31337",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$",
+      "description": "Local-development-only chain ID as observed from eth_chainId."
+    },
+    "clientVersion": {
+      "type": "string",
+      "pattern": "^BTCSL2/.+"
+    }
+  }
+}
