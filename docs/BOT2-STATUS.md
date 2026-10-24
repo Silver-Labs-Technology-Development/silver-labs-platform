@@ -12,7 +12,7 @@
 | --- | --- | --- | --- |
 | SilverPay | `master` | `82aed73` | Pushed to `Silver-Labs-Technology-Development/SilverPay`; `origin/master` matches. |
 | SilverForge-Studio | `silverforge-development` | `143fd8d` | Pushed to `origin/silverforge-development`; includes the fresh-data-directory note. |
-| silver-labs-platform | `main` | `6bb9ee7` | Pushed to `origin/main`; this status update is a follow-up commit. |
+| silver-labs-platform | `main` | code `6bb9ee7`; status commit contains this file | Pushed to `origin/main`. |
 | Official-Website | `website-development` | `e1456af` | Pushed to `origin/website-development`. `main` remains at `502d3e5`; the publishing branch is `website-development`. |
 
 `silver-wallet` and `SilverPay` resolve to the same repository and `master`
