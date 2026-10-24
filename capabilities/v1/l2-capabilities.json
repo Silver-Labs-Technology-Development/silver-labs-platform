@@ -1,0 +1,145 @@
+{
+  "$schema": "../../schemas/v1/l2-capabilities.schema.json",
+  "schemaVersion": 1,
+  "profile": {
+    "profileId": "btcs-l2-local",
+    "profileType": "local-development",
+    "chainId": "31337",
+    "chainIdHex": "0x7a69",
+    "clientVersionPrefix": "BTCSL2/",
+    "nativeGas": {
+      "symbol": "BTCS",
+      "decimals": 18
+    }
+  },
+  "observed": {
+    "at": "2026-10-23",
+    "repository": "Silver-Labs-Technology-Development/btcs-l2",
+    "revision": "6d78262",
+    "source": "execution/evm/src/rpc.ts",
+    "clientVersion": "BTCSL2/v0.14-local/ethereumjs-vm-10.1.3/osaka",
+    "bindAddress": "127.0.0.1",
+    "cors": false,
+    "developmentSequencer": "opt-in via --dev-sequencer",
+    "notes": "The local btcs-l2 working tree also contains uncommitted btcs_nodeInfo and btcs_health diagnostics. They are excluded from this manifest until committed and documented; consumers must not rely on them."
+  },
+  "methods": {
+    "read": [
+      "web3_clientVersion",
+      "eth_chainId",
+      "net_version",
+      "net_listening",
+      "net_peerCount",
+      "eth_blockNumber",
+      "eth_getBlockByNumber",
+      "eth_getBlockByHash",
+      "eth_getTransactionByHash",
+      "eth_getTransactionReceipt",
+      "eth_getBalance",
+      "eth_getTransactionCount",
+      "eth_getCode",
+      "eth_getStorageAt",
+      "eth_call",
+      "eth_estimateGas",
+      "eth_getLogs"
+    ],
+    "write": [
+      "eth_sendRawTransaction"
+    ],
+    "developmentOnly": [
+      "btcs_dev_mine"
+    ],
+    "unsupported": [
+      "eth_accounts",
+      "eth_requestAccounts",
+      "eth_sendTransaction",
+      "eth_sign",
+      "eth_signTransaction",
+      "personal_sign",
+      "eth_gasPrice",
+      "eth_feeHistory",
+      "eth_maxPriorityFeePerGas",
+      "eth_syncing",
+      "eth_getBlockTransactionCountByHash",
+      "eth_getBlockTransactionCountByNumber",
+      "eth_getTransactionByBlockNumberAndIndex",
+      "eth_getTransactionByBlockHashAndIndex",
+      "eth_newFilter",
+      "eth_newBlockFilter",
+      "eth_getFilterChanges",
+      "eth_uninstallFilter"
+    ]
+  },
+  "semantics": {
+    "transactionType": "EIP-1559 only",
+    "feeDiscovery": "read baseFeePerGas from eth_getBlockByNumber; eth_gasPrice is unavailable",
+    "blockTags": {
+      "supported": ["latest", "earliest", "0x-quantity"],
+      "rejected": ["pending", "safe", "finalized"],
+      "observedError": "eth_getTransactionCount(addr, \"pending\") returns -32602 Invalid params"
+    },
+    "receipt": "null until included in a canonical block; status is 0x0 or 0x1",
+    "pendingPool": "in-memory, development sequencer only; a missing receipt is not proof of non-submission",
+    "inclusionIsFinality": false,
+    "netListening": false,
+    "netPeerCount": "0"
+  },
+  "signing": {
+    "supported": false,
+    "reason": "The node exposes no account or signing method. Applications must delegate signing to an injected wallet and submit eth_sendRawTransaction only if they hold a key.",
+    "walletContract": "EIP-1193 eth_requestAccounts + eth_sendTransaction against a wallet configured for chain 31337"
+  },
+  "trust": [
+    "Single trusted development sequencer; no independent verification of execution.",
+    "The RPC operator can lie about balances, blocks, and receipts.",
+    "Inclusion in a canonical local block is not finality and is not settlement.",
+    "No validity proof, no L1 anchor enforcement, and no trustless exit is exercised by these methods.",
+    "Chain ID 31337 is shared by unrelated local chains; the BTCSL2/ banner is the additional identity check."
+  ],
+  "knownGaps": [
+    {
+      "id": "cors",
+      "impact": "A browser page on another origin cannot call the RPC directly.",
+      "requestedChange": "Send CORS headers for loopback development, or document a required same-origin reverse proxy."
+    },
+    {
+      "id": "pending-block-tag",
+      "impact": "Browser wallets and ethers v6 request nonces with the pending tag and fail with -32602.",
+      "requestedChange": "Accept pending as an alias for the sequencer view, or document that clients must use latest."
+    },
+    {
+      "id": "fee-discovery",
+      "impact": "Wallets cannot use eth_gasPrice or eth_feeHistory.",
+      "requestedChange": "Implement eth_gasPrice and eth_feeHistory, or document base-fee-only fee construction."
+    },
+    {
+      "id": "funding",
+      "impact": "Only the genesis fixture account holds BTCS; an arbitrary injected-wallet account cannot be funded.",
+      "requestedChange": "Provide a local-only funding method (for example btcs_dev_fund) gated behind --dev-sequencer."
+    },
+    {
+      "id": "address-history",
+      "impact": "No address index; history requires bounded block scans.",
+      "requestedChange": "Document that history is not an RPC capability; an indexer is a separate service."
+    }
+  ],
+  "consumers": {
+    "readOnlyClient": {
+      "package": "@silver-labs/btcs-l2-client",
+      "version": "0.1.0",
+      "status": "unreleased source; read-only, no signing or submission",
+      "notes": "13 tests: 12 pass, 1 live integration test skipped unless BTCS_L2_RPC_URL is set. Schema and type checks pass."
+    },
+    "silverPayWallet": {
+      "repository": "Silver-Labs-Technology-Development/SilverPay",
+      "version": "0.2.0",
+      "status": "local development prototype; watch-only reads, ERC-20 tracking, bounded history, and injected-wallet send preparation",
+      "notes": "70 tests: 69 pass, 1 skipped without a dev key; production build succeeds. Injected-wallet signing is unverified because the node rejects the pending block tag."
+    },
+    "silverForgeStudio": {
+      "repository": "Silver-Labs-Technology-Development/SilverForge-Studio",
+      "status": "local development profile verified against this interface",
+      "notes": "17 tests: 16 pass, 1 live deployment skipped without a dev key; the live ERC-20 deployment passes when the harness key is supplied."
+    }
+  }
+}

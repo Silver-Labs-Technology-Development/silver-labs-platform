@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silver-labs.invalid/schemas/v1/l2-capabilities.schema.json",
+  "title": "Silver Labs L2 capability manifest",
+  "description": "Observed JSON-RPC surface and trust boundaries of a BTCS L2 development profile. A capability manifest is an observation, not a consensus, finality, or production-readiness claim.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "profile",
+    "observed",
+    "methods",
+    "semantics",
+    "signing",
+    "trust",
+    "knownGaps",
+    "consumers"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "pattern": "^(\\.\\./)+schemas/v1/l2-capabilities\\.schema\\.json$"
+    },
+    "schemaVersion": {
+      "const": 1,
+      "type": "integer"
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profileId",
+        "profileType",
+        "chainId",
+        "chainIdHex",
+        "clientVersionPrefix",
+        "nativeGas"
+      ],
+      "properties": {
+        "profileId": {
+          "$ref": "#/$defs/profileId"
+        },
+        "profileType": {
+          "const": "local-development",
+          "type": "string"
+        },
+        "chainId": {
+          "$ref": "#/$defs/decimalChainId"
+        },
+        "chainIdHex": {
+          "$ref": "#/$defs/hexChainId"
+        },
+        "clientVersionPrefix": {
+          "const": "BTCSL2/",
+          "type": "string"
+        },
+        "nativeGas": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["symbol", "decimals"],
+          "properties": {
+            "symbol": {
+              "type": "string",
+              "pattern": "^[A-Z0-9]{2,10}$"
+            },
+            "decimals": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 36
+            }
+          }
+        }
+      }
+    },
+    "observed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "at",
+        "repository",
+        "revision",
+        "source",
+        "clientVersion",
+        "bindAddress",
+        "cors",
+        "developmentSequencer"
+      ],
+      "properties": {
+        "at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,40}$"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "clientVersion": {
+          "type": "string",
+          "pattern": "^BTCSL2/"
+        },
+        "bindAddress": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "cors": {
+          "type": "boolean"
+        },
+        "developmentSequencer": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "notes": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "methods": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["read", "write", "developmentOnly", "unsupported"],
+      "properties": {
+        "read": {
+          "$ref": "#/$defs/methodList"
+        },
+        "write": {
+          "$ref": "#/$defs/methodList"
+        },
+        "developmentOnly": {
+          "$ref": "#/$defs/methodList"
+        },
+        "unsupported": {
+          "$ref": "#/$defs/methodList"
+        }
+      }
+    },
+    "semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transactionType",
+        "feeDiscovery",
+        "blockTags",
+        "receipt",
+        "pendingPool",
+        "inclusionIsFinality",
+        "netListening",
+        "netPeerCount"
+      ],
+      "properties": {
+        "transactionType": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "feeDiscovery": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "blockTags": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["supported", "rejected", "observedError"],
+          "properties": {
+            "supported": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "rejected": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "uniqueItems": true
+            },
+            "observedError": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          }
+        },
+        "receipt": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "pendingPool": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "inclusionIsFinality": {
+          "const": false,
+          "type": "boolean"
+        },
+        "netListening": {
+          "type": "boolean"
+        },
+        "netPeerCount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        }
+      }
+    },
+    "signing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["supported", "reason"],
+      "properties": {
+        "supported": {
+          "type": "boolean"
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "walletContract": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "trust": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "knownGaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "impact", "requestedChange"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "impact": {
+            "$ref": "#/$defs/nonEmptyString"
+          },
+          "requestedChange": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "consumers": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/consumer"
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profileId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "decimalChainId": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "hexChainId": {
+      "type": "string",
+      "pattern": "^0x(?:0|[1-9a-fA-F][0-9a-fA-F]*)$"
+    },
+    "rpcMethod": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+    },
+    "methodList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rpcMethod"
+      },
+      "uniqueItems": true
+    },
+    "consumer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "package": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+        },
+        "status": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "notes": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "anyOf": [
+        {
+          "required": ["repository"]
+        },
+        {
+          "required": ["package"]
+        }
+      ]
+    }
+  }
+}

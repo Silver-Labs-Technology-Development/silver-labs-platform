@@ -10,7 +10,7 @@ assertion that any product is complete or production-ready.
 | --- | --- | --- | --- | --- |
 | BTCS Core | `~/Silver-Labs/btcs-core` | Upstream `bitcoin-silver/core`; org fork [Silver-Labs-Bitcoin-Silver-Development](https://github.com/Silver-Labs-Technology-Development/Silver-Labs-Bitcoin-Silver-Development), `main` | Existing L1 fork; builds locally; Silver Labs changes are experimental | Owns L1 node, RPC, CLI, and Qt wallet. L2 prototypes are separate repositories and consume its RPC. |
 | BTCS L2 | `~/Silver-Labs/btcs-l2` | [btcs-l2](https://github.com/Silver-Labs-Technology-Development/btcs-l2), `experimental/deposit-prelude-v1` | Prototype, locally tested | EVM execution, sequencing, settlement research, deposits/withdrawals, local RPC, and Studio. Not trustless or production-ready. |
-| SilverPay | `~/Silver-Labs/SilverPay` | [silver-wallet](https://github.com/Silver-Labs-Technology-Development/silver-wallet), `master` | Prototype wallet; payments not implemented | Unified wallet/account/payment product boundary. The GitHub repository name is retained for URL stability; the wallet application is not a separate product. |
+| SilverPay | `~/Silver-Labs/SilverPay` | [SilverPay](https://github.com/Silver-Labs-Technology-Development/SilverPay), `master` | Prototype wallet; 70/70 local tests with harness key; injected-wallet signing unverified; payments not implemented | Unified wallet/account/payment product boundary. Canonical wallet application; see [ADR 0002](./decisions/0002-canonical-silverpay-app.md). The former `silver-wallet` URL redirects to this repository. |
 | SilverForge Studio | `~/Silver-Labs/SilverForge-Studio` | [SilverForge-Studio](https://github.com/Silver-Labs-Technology-Development/SilverForge-Studio), `silverforge-development` | Development prototype | Static token/NFT creation frontend and BSNA research. `gh-pages` is a generated preview branch. |
 | SilvEx CEX | `~/Silver-Labs/SilvEx-CEX` | [SilvEx-CEX](https://github.com/Silver-Labs-Technology-Development/SilvEx-CEX), `main` | Planned; scope only | Centralized exchange. No accounts, custody, matching, deposits, withdrawals, or trading implementation. |
 | SilvEx DEX | `~/Silver-Labs/SilvEx-DEX` | [SilvEx-DEX](https://github.com/Silver-Labs-Technology-Development/SilvEx-DEX), `main` | Planned; scope only | Wallet-authorized, non-custodial exchange. No contracts, pools, router, quote engine, or swap interface. |
@@ -18,7 +18,7 @@ assertion that any product is complete or production-ready.
 | Silver Scan | `~/Silver-Labs/Silver-Scan` | [Silver-Scan](https://github.com/Silver-Labs-Technology-Development/Silver-Scan), `main` | Planned; scope only | L1/L2 explorer and indexing. Studio's bounded local view is not an explorer. |
 | BTCS Mining Pool | `~/Silver-Labs/BTCS-Mining-Pool` | [BTCS-Mining-Pool](https://github.com/Silver-Labs-Technology-Development/BTCS-Mining-Pool), `main` | Planned; scope only | Stratum, share validation, block submission, and payout accounting. Distinct from L2 sequencing. |
 | POW-S | `~/Silver-Labs/POW-S` | [POW-S](https://github.com/Silver-Labs-Technology-Development/POW-S), `main` | Research / planned; scope unresolved | Proof-of-work services research. No service, API, contract, or customer model is defined. |
-| Silver Labs Platform | `~/Silver-Labs/silver-labs-platform` | [silver-labs-platform](https://github.com/Silver-Labs-Technology-Development/silver-labs-platform), `main` | Prototype shared SDK | Shared read-only L2 client, schemas, integration contracts, and scaffolding. Product implementation stays in product repositories. Package is `UNLICENSED` and not published to a registry. |
+| Silver Labs Platform | `~/Silver-Labs/silver-labs-platform` | [silver-labs-platform](https://github.com/Silver-Labs-Technology-Development/silver-labs-platform), `main` | Prototype shared SDK and verified capability contract | Shared read-only L2 client, capability manifest/schema, integration contracts, and scaffolding. Product implementation stays in product repositories. Package is `UNLICENSED` and not published to a registry. |
 | Official Website | `~/Silver-Labs/Official-Website` | [Official-Website](https://github.com/Silver-Labs-Technology-Development/Official-Website), `website-development` and `main` | Implemented static developer site | Public status, architecture, verified repository links, and quickstart. No backend, custody, or production claims. |
 | BTCS L2 trust sandbox | `~/Silver-Labs/btcs-l2-trust-sandbox` | No remote; local Git history only | Local research prototype | BitVM-style settlement and recovery research. 21/21 local tests. Intentionally unpublished; publication needs explicit owner approval. |
 
@@ -28,8 +28,9 @@ assertion that any product is complete or production-ready.
 - The workspace root is not a Git repository. `docs/`, `shared/`, and `archive/`
   are workspace-level folders and must not become nested repositories.
 - Existing repository names are retained unless a rename has a documented,
-  verified benefit. In particular, the SilverPay product keeps the
-  `silver-wallet` GitHub URL; only the local folder uses the product name.
+  verified benefit. The SilverPay repository was renamed from `silver-wallet`
+  to `SilverPay`; both URLs resolve to the same `master` HEAD. Use the
+  `SilverPay` URL for new links.
 - BTCS Core and BTCS L2 remain separate repositories. A future end-user
   distribution may package compatible components, but must not merge their Git
   histories.

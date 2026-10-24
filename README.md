@@ -8,10 +8,14 @@ and read-only BTCS L2 client code for Silver Labs projects.
 - `packages/btcs-l2-client` is a read-only client for the local BTCS L2
   development profile (`chainId: 31337`, `BTCSL2/` client banner). It does not
   sign, submit transactions, or prove consensus/finality.
-- `schemas/v1` defines the matching local network identity contract.
+- `schemas/v1` defines the local network identity contract and the capability
+  manifest contract.
+- `capabilities/v1` records the observed RPC methods, unsupported methods,
+  transaction semantics, trust assumptions, and known gaps for the local
+  profile. It is an observation, not a production-readiness claim.
 - `dev` contains a safe repository scaffold utility.
-- `docs` records repository boundaries, compatibility policy, release gates,
-  local setup, and development workflow.
+- `docs` records repository boundaries, application capabilities,
+  compatibility policy, release gates, local setup, and development workflow.
 
 The package is present in this public repository but has not been released to a
 package registry. Its `package.json` currently declares `UNLICENSED`; no reuse
