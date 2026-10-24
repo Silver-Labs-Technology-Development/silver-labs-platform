@@ -44,9 +44,11 @@ startup/shutdown behavior, resource limits, upgrade/rollback behavior, and
 end-to-end tests. Keep experimental L2 functions clearly labeled until
 independent security review establishes the settlement guarantees.
 
-Silver Scan, SilvEx products, the mining pool, and POW-S were not found as Git
-repositories in the inspected workspace. Their APIs and product boundaries
-must be agreed before creating cross-product dependencies.
+Silver Scan, the three SilvEx products, the mining pool, and POW-S now have
+separate planned repositories, but no implementation. Their APIs and product
+boundaries must be agreed before creating cross-product dependencies. A planned
+repository is not evidence that a service exists; see
+[`REPOSITORY-REGISTRY.md`](./REPOSITORY-REGISTRY.md).
 
 ## Trust and data authority
 
