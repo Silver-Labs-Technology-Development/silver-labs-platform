@@ -26,6 +26,24 @@ L2 consensus. SilverForge-related work is also present in BTCS Core UI and
 BTCS L2 token tooling; the standalone frontend source is in the public
 `SilverForge-Studio` repository.
 
+## Target BTCS distribution
+
+The end-user goal is one coordinated BTCS installation with Core L1, BTCS L2,
+and one integrated GUI. This is a product direction, not a currently available
+installer or production release. Keep development repositories separate:
+`Silver-Labs-Bitcoin-Silver-Development` owns Core and its L1 integration
+surfaces, while `btcs-l2` owns the L2 execution engine, services, Studio, and
+token tooling. Package compatible versions together only after explicit
+integration testing; do not copy the complete L2 application into the Core
+repository or change L1 consensus without authorization.
+
+The future GUI must connect to the actual L1/L2 services, manage their
+lifecycles, and surface startup, RPC, storage, and upgrade failures. Before
+shipping, define coordinated component versions, data-directory ownership,
+startup/shutdown behavior, resource limits, upgrade/rollback behavior, and
+end-to-end tests. Keep experimental L2 functions clearly labeled until
+independent security review establishes the settlement guarantees.
+
 Silver Scan, SilvEx products, the mining pool, and POW-S were not found as Git
 repositories in the inspected workspace. Their APIs and product boundaries
 must be agreed before creating cross-product dependencies.
