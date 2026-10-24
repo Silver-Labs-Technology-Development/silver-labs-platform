@@ -10,10 +10,10 @@
 
 | Repository | Branch | Local HEAD | Remote state |
 | --- | --- | --- | --- |
-| SilverPay | `master` | `82aed73` | Pushed to `Silver-Labs-Technology-Development/SilverPay`; `origin/master` matches. |
+| SilverPay | `master` | `791b182` | Pushed to `Silver-Labs-Technology-Development/SilverPay`; `origin/master` matches. |
 | SilverForge-Studio | `silverforge-development` | `143fd8d` | Pushed to `origin/silverforge-development`; includes the fresh-data-directory note. |
 | silver-labs-platform | `main` | code `6bb9ee7`; status commit contains this file | Pushed to `origin/main`. |
-| Official-Website | `website-development` | `e1456af` | Pushed to `origin/website-development`. `main` remains at `502d3e5`; the publishing branch is `website-development`. |
+| Official-Website | `website-development` | `e1456af` | Pushed to `origin/website-development`; `main` is aligned at the same commit. |
 
 `silver-wallet` and `SilverPay` resolve to the same repository and `master`
 HEAD. New links use `SilverPay`; the old URL redirects.
@@ -103,7 +103,7 @@ leftover pending transactions could not affect the nonce.
 
 | Clone | Result |
 | --- | --- |
-| `SilverPay` `master` @ `82aed73` | `npm ci`; `npm test` with the live node and harness key: **69 pass, 1 skip** (the platform-conformance case skips when the sibling checkout is absent); `npm run test:integration`: **3/3 pass**; `npm run build`: pass. |
+| `SilverPay` `master` @ `791b182` | `npm ci`; `npm test` with the live node and harness key: **69 pass, 1 skip** (the platform-conformance case skips when the sibling checkout is absent); `npm run test:integration`: **3/3 pass**; `npm run build`: pass. |
 | `SilverForge-Studio` `silverforge-development` @ `f9f2e43` | `npm ci`; `npm test` with the clean node and harness key: **17/17 pass**; `npm run build`: pass. A first run against the shared long-lived node failed with `-32010 Transaction nonce is not the next contiguous pending nonce`; a fresh data directory resolved it. |
 | `silver-labs-platform` `main` @ `6bb9ee7` | Scaffold tests **3/3**; client `npm ci`, `npm test` **19 pass, 1 skip**; live integration **1/1**; `npm run check:types` pass. |
 | `Official-Website` `website-development` @ `e1456af` | `node --check` passes; **8/8** static tests pass. No build step. |
@@ -190,6 +190,8 @@ live run.
   flows.
 - `SilverPay` `82aed73` — update the security contact after the repository
   rename.
+- `SilverPay` `791b182` — align the package name and source link with the
+  SilverPay repository name.
 - `SilverForge-Studio` `f9f2e43` — verify local BTCS L2 fees, mining, and token
   deployment.
 - `SilverForge-Studio` `143fd8d` — document the fresh-data-directory requirement
