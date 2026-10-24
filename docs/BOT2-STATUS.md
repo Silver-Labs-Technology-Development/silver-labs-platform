@@ -10,10 +10,10 @@
 
 | Repository | Branch | Local HEAD | Remote state |
 | --- | --- | --- | --- |
-| SilverPay | `master` | `fa3b44b` | Pushed to `Silver-Labs-Technology-Development/SilverPay`; `origin/master` matches. |
-| SilverForge-Studio | `silverforge-development` | `97eed21` + working-tree changes | Publication pending in this pass. |
-| silver-labs-platform | `main` | `86901e7` + working-tree changes | Publication pending in this pass. |
-| Official-Website | `website-development` | `99e3673` + working-tree changes | Publication pending in this pass. |
+| SilverPay | `master` | `82aed73` | Pushed to `Silver-Labs-Technology-Development/SilverPay`; `origin/master` matches. |
+| SilverForge-Studio | `silverforge-development` | `143fd8d` | Pushed to `origin/silverforge-development`; includes the fresh-data-directory note. |
+| silver-labs-platform | `main` | `6bb9ee7` | Pushed to `origin/main`; this status update is a follow-up commit. |
+| Official-Website | `website-development` | `e1456af` | Pushed to `origin/website-development`. `main` remains at `502d3e5`; the publishing branch is `website-development`. |
 
 `silver-wallet` and `SilverPay` resolve to the same repository and `master`
 HEAD. New links use `SilverPay`; the old URL redirects.
@@ -94,6 +94,24 @@ The harness key is the public development fixture documented in
 environment to sign **outside** the applications. No application received or
 stored it.
 
+## Fresh-clone verification
+
+Each repository was cloned from its published branch into a new directory,
+installed with `npm ci`, and tested. A second, clean node was started at
+`http://127.0.0.1:18546` with a fresh data directory for the live cases so that
+leftover pending transactions could not affect the nonce.
+
+| Clone | Result |
+| --- | --- |
+| `SilverPay` `master` @ `82aed73` | `npm ci`; `npm test` with the live node and harness key: **69 pass, 1 skip** (the platform-conformance case skips when the sibling checkout is absent); `npm run test:integration`: **3/3 pass**; `npm run build`: pass. |
+| `SilverForge-Studio` `silverforge-development` @ `f9f2e43` | `npm ci`; `npm test` with the clean node and harness key: **17/17 pass**; `npm run build`: pass. A first run against the shared long-lived node failed with `-32010 Transaction nonce is not the next contiguous pending nonce`; a fresh data directory resolved it. |
+| `silver-labs-platform` `main` @ `6bb9ee7` | Scaffold tests **3/3**; client `npm ci`, `npm test` **19 pass, 1 skip**; live integration **1/1**; `npm run check:types` pass. |
+| `Official-Website` `website-development` @ `e1456af` | `node --check` passes; **8/8** static tests pass. No build step. |
+
+The shared-node nonce failure is an isolation hazard, not a hidden success. The
+SilverForge README now tells contributors to use a fresh data directory for each
+live run.
+
 ## Real evidence versus mocks
 
 **Real local node evidence**
@@ -170,5 +188,19 @@ stored it.
 
 - `SilverPay` `fa3b44b` — implement wallet send, asset, history, and recovery
   flows.
-- Platform and website commits for this status pass are recorded in their
-  respective `git log`; this file is updated when the pass is published.
+- `SilverPay` `82aed73` — update the security contact after the repository
+  rename.
+- `SilverForge-Studio` `f9f2e43` — verify local BTCS L2 fees, mining, and token
+  deployment.
+- `SilverForge-Studio` `143fd8d` — document the fresh-data-directory requirement
+  for live L2 tests.
+- `silver-labs-platform` `6bb9ee7` — document and validate the local L2
+  application capability contract; this status update is a follow-up commit.
+- `Official-Website` `502d3e5` — link verified planned repositories without
+  implying implementation.
+- `Official-Website` `99e3673` — update SilverPay links after the rename.
+- `Official-Website` `e1456af` — describe SilverPay wallet capabilities and
+  local test requirements.
+
+All pushes were fast-forward to existing development branches. No history was
+rewritten and no force-push was used.
